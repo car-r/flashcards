@@ -11,10 +11,9 @@ export const FlashcardContainer = styled.div`
     background-color: transparent;
     transform-style: preserve-3d;
     transition: all 0.2s ease-in-out;
-    height: 250px;
-    width: 250px;
     perspective: 1000px;
     cursor: pointer;
+    height: ${props => props.height = `${props.height}px`};
     transform: ${props => props.flip ? 'rotateY(180deg)' : 'rotateY(0)'};
 
     &:hover {
@@ -30,6 +29,7 @@ export const FlashcardFront = styled.div`
     backface-visibility: hidden;
     background-color: #fff;
     height: 100%;
+    width: 100%;
     left: 0;
 `
 
