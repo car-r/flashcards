@@ -27,7 +27,7 @@ const Flashcard = ({flashcard}) => {
                 <FlashcardQuestion ref={questionEl}>{flashcard.question}</FlashcardQuestion>
                 <FlashcardOptions ref={frontEl}>
                     {flashcard.options.map(option => {
-                    return <FlashcardOption>{option}</FlashcardOption>
+                    return <FlashcardOption key={option}>{option}</FlashcardOption>
                 })}
                 </FlashcardOptions>
             </FlashcardFront>
