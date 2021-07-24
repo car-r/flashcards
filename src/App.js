@@ -4,7 +4,7 @@ import FlashcardList from './components/flashcardlist';
 import axios from 'axios'
 
 function App() {
-  const [flashcards, setFlashcards] = useState(SAMPLE_FLASHCARDS)
+  const [flashcards, setFlashcards] = useState([])
   const [categories, setCategories] = useState([])
 
   const categoryEl = useRef()
@@ -18,8 +18,25 @@ function App() {
   }, [])
 
   useEffect(() => {
+    
+  }, [])
+
+  // decode HTML and convert to string
+  function decodeString(str) {
+    const textArea = document.createElement('textarea')
+    textArea.innerHTML = str
+    return textArea.value
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
     const fetchQuestions = async () => {
-      const result = await axios('https://opentdb.com/api.php?amount=10')
+      const result = await axios('https://opentdb.com/api.php', {
+        params: {
+          amount: amountEl.current.value,
+          category: categoryEl.current.value
+        }
+      })
   
       setFlashcards(result.data.results.map((questionItem, index) => {
         const answer = decodeString(questionItem.correct_answer)
@@ -36,17 +53,6 @@ function App() {
       }))
     }
     fetchQuestions()
-  }, [])
-
-  // decode HTML and convert to string
-  function decodeString(str) {
-    const textArea = document.createElement('textarea')
-    textArea.innerHTML = str
-    return textArea.value
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault()
   }
 
   return (
@@ -60,9 +66,12 @@ function App() {
             })}
           </select>
         </div>
-        <div>
+        <div className="form-group">
             <label htmlFor="amount">Number of Questions</label>
             <input type="number" id="amount" min="1" step="1" defaultValue={10} ref={amountEl}/>
+        </div>
+        <div className="form-group">
+          <button className="btn">Generate</button>
         </div>
       </form>
       <div className="AppContainer">
@@ -72,40 +81,5 @@ function App() {
   );
 }
 
-const SAMPLE_FLASHCARDS = [
-  {
-    id: 1,
-    question: 'what is 2 + 2?',
-    answer: '4',
-    options: [
-      '2',
-      '3',
-      '4',
-      '5'
-    ]
-  },
-  {
-    id: 2,
-    question: 'what is 10 + 10?',
-    answer: '20',
-    options: [
-      '20',
-      '33',
-      '40',
-      '15'
-    ]
-  },
-  {
-    id: 3,
-    question: 'what is 20 + 20?',
-    answer: '40',
-    options: [
-      '20',
-      '30',
-      '40',
-      '50'
-    ]
-  }
-]
 
 export default App;
